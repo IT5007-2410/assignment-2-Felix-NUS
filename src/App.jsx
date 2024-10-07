@@ -1,4 +1,3 @@
-import React from "react";
 /*Q1. JS Variable needs to be created here. Below variable is just an example. Try to add more attributes.*/
 const initialTravellers = [
     {
