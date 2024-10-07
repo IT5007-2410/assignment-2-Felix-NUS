@@ -1,23 +1,24 @@
+import React from "react";
 /*Q1. JS Variable needs to be created here. Below variable is just an example. Try to add more attributes.*/
 const initialTravellers = [
     {
-        id: 1, name: 'Jack', phone: 88885555, gender: 'male', IDNumber: '123456789',
+        id: 1, name: 'Jack', phone: 88885555, gender: 'male',
         bookingTime: new Date(), seatNumber: 1,
     },
     {
-        id: 2, name: 'Rose', phone: 88884444, gender: 'female', IDNumber: '987654321',
+        id: 2, name: 'Rose', phone: 88884444, gender: 'female',
         bookingTime: new Date(), seatNumber: 2,
     },
     {
-        id: 3, name: 'Person1', phone: 88883333, gender: 'male', IDNumber: '123498765',
+        id: 3, name: 'Person1', phone: 88883333, gender: 'male',
         bookingTime: new Date(), seatNumber: 3,
     },
     {
-        id: 4, name: 'Person2', phone: 88882222, gender: 'female', IDNumber: '987612345',
+        id: 4, name: 'Person2', phone: 88882222, gender: 'female',
         bookingTime: new Date(), seatNumber: 4,
     },
     {
-        id: 5, name: 'Person3', phone: 88881111, gender: 'male', IDNumber: '123478965',
+        id: 5, name: 'Person3', phone: 88881111, gender: 'male',
         bookingTime: new Date(), seatNumber: 5,
     },
 ];
@@ -34,7 +35,6 @@ function TravellerRow(props) {
             <td>{traveller.name}</td>
             <td>{traveller.phone}</td>
             <td>{traveller.gender}</td>
-            <td>{traveller.IDNumber}</td>
             <td>{traveller.seatNumber}</td>
             <td>{traveller.bookingTime.toDateString()}</td>
         </tr>
@@ -53,7 +53,6 @@ function Display(props) {
                 <th>Name</th>
                 <th>Phone</th>
                 <th>Gender</th>
-                <th>ID Number</th>
                 <th>Seat Number</th>
                 <th>Booking Time</th>
             </tr>
@@ -75,13 +74,28 @@ class Add extends React.Component {
     handleSubmit(e) {
         e.preventDefault();
         /*Q4. Fetch the passenger details from the add form and call bookTraveller()*/
+        const form = document.forms.addTraveller;
+        const newTraveller = {
+            id: form.travellerid.value,
+            name: form.travellername.value,
+            phone: form.travellerphone.value,
+            gender: form.travellergender.value,
+            seatNumber: form.travellerseatNumber.value,
+            bookingTime: new Date(),
+        }
+        this.props.bookTraveller(newTraveller);
+        form.reset();
     }
 
     render() {
         return (
             <form name="addTraveller" onSubmit={this.handleSubmit}>
                 {/*Q4. Placeholder to enter passenger details. Below code is just an example.*/}
+                <input type="text" name="travellerid" placeholder="ID"/>
                 <input type="text" name="travellername" placeholder="Name"/>
+                <input type="text" name="travellerphone" placeholder="Phone"/>
+                <input type="text" name="travellergender" placeholder='Gender'/>
+                <input type="text" name="travellerseatNumber" placeholder="Seat Number"/>
                 <button>Add</button>
             </form>
         );
@@ -148,6 +162,7 @@ class TicketToRide extends React.Component {
 
     bookTraveller(passenger) {
         /*Q4. Write code to add a passenger to the traveller state variable.*/
+        this.setState({travellers: [...this.state.travellers, passenger]});
     }
 
     deleteTraveller(passenger) {
