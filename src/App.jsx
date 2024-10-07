@@ -1,18 +1,31 @@
 /*Q1. JS Variable needs to be created here. Below variable is just an example. Try to add more attributes.*/
 const initialTravellers = [
   {
-    id: 1, name: 'Jack', phone: 88885555,
-    bookingTime: new Date(),
+    id: 1, name: 'Jack', phone: 88885555, gender: 'male', IDNumber: '123456789',
+    bookingTime: new Date(), seatNumber: 1,
   },
   {
-    id: 2, name: 'Rose', phone: 88884444,
-    bookingTime: new Date(),
+    id: 2, name: 'Rose', phone: 88884444, gender: 'female', IDNumber: '987654321',
+    bookingTime: new Date(), seatNumber: 2,
+  },
+  {
+    id: 3, name: 'Person1', phone: 88883333, gender: 'male', IDNumber: '123498765',
+    bookingTime: new Date(), seatNumber: 3,
+  },
+  {
+    id: 4, name: 'Person2', phone: 88882222, gender: 'female', IDNumber: '987612345',
+    bookingTime: new Date(), seatNumber: 4,
+  },
+  {
+    id: 5, name: 'Person3', phone: 88881111, gender: 'male', IDNumber: '123478965',
+    bookingTime: new Date(), seatNumber: 5,
   },
 ];
 
 
 function TravellerRow(props) {
-  {/*Q3. Placeholder to initialize local variable based on traveller prop.*/}
+  {/*Q3. Placeholder to initialize local variable based on traveller prop.*/
+  }
   return (
     <tr>
 	  {/*Q3. Placeholder for rendering one row of a table with required traveller attribute values.*/}
