@@ -43,6 +43,7 @@ function TravellerRow(props) {
 function Display(props) {
     /*Q3. Write code to render rows of table, reach corresponding to one traveller. Make use of the TravellerRow function that draws one row.*/
     const {travellers} = props;
+    console.log("travellers: ", travellers);
     return (
         <table className="bordered-table">
             <thead>
@@ -163,12 +164,24 @@ class TicketToRide extends React.Component {
 
     bookTraveller(passenger) {
         /*Q4. Write code to add a passenger to the traveller state variable.*/
-        this.setState({travellers: [...this.state.travellers, passenger]});
+        console.log("bookTraveller: ", passenger);
+        const newList = this.state.travellers.slice();
+        newList.push(passenger);
+        this.setState({travellers: newList});
+        console.log("newTravellers: ", this.state.travellers);
     }
 
     deleteTraveller(passenger) {
         /*Q5. Write code to delete a passenger from the traveller state variable.*/
-        this.setState({travellers: this.state.travellers.filter(traveller => traveller.name !== passenger.name)});
+        console.log("deleteTraveller: ", passenger);
+        var newList = [];
+        this.state.travellers.forEach(element => {
+            if (element.name !== passenger.name) {
+                newList.push(element);
+            }
+        })
+        this.setState({travellers: newList});
+        console.log("newTravellers: ", this.state.travellers);
     }
 
     render() {
@@ -182,10 +195,11 @@ class TicketToRide extends React.Component {
                     {/*Only one of the below four divisions is rendered based on the button clicked by the user.*/}
                     {/*Q2 and Q6. Code to call Instance that draws Homepage. Homepage shows Visual Representation of free seats.*/}
                     {/*Q3. Code to call component that Displays Travellers.*/}
-
+                    <Display travellers={this.state.travellers}/>
                     {/*Q4. Code to call the component that adds a traveller.*/}
+                    <Add bookTraveller={this.bookTraveller}/>
                     {/*Q5. Code to call the component that deletes a traveller based on a given attribute.*/}
-                    <Delete/>
+                    <Delete deleteTraveller={this.deleteTraveller}/>
                 </div>
             </div>
         );
