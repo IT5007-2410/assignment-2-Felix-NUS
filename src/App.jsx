@@ -128,16 +128,61 @@ class Delete extends React.Component {
 }
 
 class Homepage extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
+        this.totalSeats = 10;
     }
 
     render() {
+        const { travellers } = this.props;
+
+        // console.log(travellers);
+
+        // available seats
+        let freeSeats = this.totalSeats;
+        if (travellers !== undefined) {
+            freeSeats = this.totalSeats - travellers.length;
+        }
+
+        const seats = [];
+        // Because there are no seats number, so just change the first few occupied seats color.
+        for (let i = 0; i < this.totalSeats; i++) {
+            if (travellers !== undefined && i < travellers.length) {
+                seats.push('occupied');
+            } else {
+                seats.push('free');
+            }
+        }
+
         return (
             <div>
                 {/*Q2. Placeholder for Homepage code that shows free seats visually.*/}
-
-            </div>);
+                <h2>Now, there are * {freeSeats} * available seats!</h2>
+                <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(5, 50px)',
+                    gap: '10px'
+                }}>
+                    {
+                        seats.map((seat, index) => (
+                            <button
+                                key={index}
+                                style={{
+                                    backgroundColor: seat === 'occupied' ? 'grey' : 'green',
+                                    color: 'white',
+                                    margin: '5px',
+                                    height: '50px',
+                                    width: '50px',
+                                    cursor: 'default',
+                                }}
+                                disabled
+                            >
+                            </button>
+                        ))
+                    }
+                </div>
+            </div>
+        );
     }
 }
 
@@ -147,6 +192,7 @@ class TicketToRide extends React.Component {
         this.state = {travellers: [], selector: 1};
         this.bookTraveller = this.bookTraveller.bind(this);
         this.deleteTraveller = this.deleteTraveller.bind(this);
+        this.setSelector = this.setSelector.bind(this);
     }
 
     setSelector(value) {
@@ -200,7 +246,7 @@ class TicketToRide extends React.Component {
                 <div>
                     {/*Only one of the below four divisions is rendered based on the button clicked by the user.*/}
                     {/*Q2 and Q6. Code to call Instance that draws Homepage. Homepage shows Visual Representation of free seats.*/}
-                    {this.state.selector === 1 && <Homepage/>}
+                    {this.state.selector === 1 && <Homepage travellers={this.state.travellers}/>}
                     {/*Q3. Code to call component that Displays Travellers.*/}
                     {this.state.selector === 2 && <Display travellers={this.state.travellers}/>}
                     {/*Q4. Code to call the component that adds a traveller.*/}
