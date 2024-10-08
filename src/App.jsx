@@ -1,24 +1,24 @@
 /*Q1. JS Variable needs to be created here. Below variable is just an example. Try to add more attributes.*/
 const initialTravellers = [
     {
-        id: 1, name: 'Jack', phone: 88885555, gender: 'male',
-        bookingTime: new Date(), seatNumber: 1,
+        id: 1, name: 'Jack', phone: 88885555, gender: 'Male',
+        bookingTime: new Date()
     },
     {
-        id: 2, name: 'Rose', phone: 88884444, gender: 'female',
-        bookingTime: new Date(), seatNumber: 2,
+        id: 2, name: 'Rose', phone: 88884444, gender: 'Female',
+        bookingTime: new Date()
     },
     {
-        id: 3, name: 'Person1', phone: 88883333, gender: 'male',
-        bookingTime: new Date(), seatNumber: 3,
+        id: 3, name: 'Person1', phone: 88883333, gender: 'Male',
+        bookingTime: new Date()
     },
     {
-        id: 4, name: 'Person2', phone: 88882222, gender: 'female',
-        bookingTime: new Date(), seatNumber: 4,
+        id: 4, name: 'Person2', phone: 88882222, gender: 'Female',
+        bookingTime: new Date()
     },
     {
-        id: 5, name: 'Person3', phone: 88881111, gender: 'male',
-        bookingTime: new Date(), seatNumber: 5,
+        id: 5, name: 'Person3', phone: 88881111, gender: 'Male',
+        bookingTime: new Date()
     },
 ];
 
@@ -34,7 +34,6 @@ function TravellerRow(props) {
             <td>{traveller.name}</td>
             <td>{traveller.phone}</td>
             <td>{traveller.gender}</td>
-            <td>{traveller.seatNumber}</td>
             <td>{traveller.bookingTime.toDateString()}</td>
         </tr>
     );
@@ -53,7 +52,6 @@ function Display(props) {
                 <th>Name</th>
                 <th>Phone</th>
                 <th>Gender</th>
-                <th>Seat Number</th>
                 <th>Booking Time</th>
             </tr>
             </thead>
@@ -66,36 +64,56 @@ function Display(props) {
 }
 
 class Add extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleSubmit(e) {
         e.preventDefault();
         /*Q4. Fetch the passenger details from the add form and call bookTraveller()*/
+        const {travellers} = this.props;
+        if (travellers.length === 10) {
+            alert("The seats are full!");
+            return;
+        }
         const form = document.forms.addTraveller;
         const newTraveller = {
             id: form.travellerid.value,
             name: form.travellername.value,
             phone: form.travellerphone.value,
             gender: form.travellergender.value,
-            seatNumber: form.travellerseatNumber.value,
             bookingTime: new Date(),
         }
-        this.props.bookTraveller(newTraveller);
-        form.reset();
+        if (!newTraveller.id || !newTraveller.name || !newTraveller.phone) {
+            alert("Please fill all the fields!");
+            return;
+        }
+        let flag = false;
+        travellers.forEach(element => {
+            if (element.name === newTraveller.name) {
+                alert("The passenger is already in the list!");
+                flag = true;
+            }
+        })
+        if (!flag) {
+            alert("The passenger has been added successfully!");
+            this.props.bookTraveller(newTraveller);
+            form.reset();
+        }
     }
 
     render() {
         return (
             <form name="addTraveller" onSubmit={this.handleSubmit}>
                 {/*Q4. Placeholder to enter passenger details. Below code is just an example.*/}
-                <input type="text" name="travellerid" placeholder="ID"/>
+                <input type="number" name="travellerid" placeholder="ID"/>
                 <input type="text" name="travellername" placeholder="Name"/>
-                <input type="text" name="travellerphone" placeholder="Phone"/>
-                <input type="text" name="travellergender" placeholder='Gender'/>
-                <input type="text" name="travellerseatNumber" placeholder="Seat Number"/>
+                <input type="number" name="travellerphone" placeholder="Phone"/>
+                <select name="travellergender">
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
                 <button>Add</button>
             </form>
         );
@@ -222,13 +240,29 @@ class TicketToRide extends React.Component {
     deleteTraveller(passenger) {
         /*Q5. Write code to delete a passenger from the traveller state variable.*/
         console.log("deleteTraveller: ", passenger);
+        if (this.state.travellers.length === 0) {
+            alert("No passenger in the list!");
+            return;
+        }
+        if (!passenger.name) {
+            alert("Please fill the name field!");
+            return;
+        }
         var newList = [];
+        var found = false;
         this.state.travellers.forEach(element => {
             if (element.name !== passenger.name) {
                 newList.push(element);
+            }else {
+                found = true;
             }
         })
+        if (!found) {
+            alert("The passenger is not found!");
+            return;
+        }
         this.setState({travellers: newList});
+        alert("The passenger has been deleted successfully!");
         console.log("newTravellers: ", this.state.travellers);
     }
 
@@ -250,7 +284,7 @@ class TicketToRide extends React.Component {
                     {/*Q3. Code to call component that Displays Travellers.*/}
                     {this.state.selector === 2 && <Display travellers={this.state.travellers}/>}
                     {/*Q4. Code to call the component that adds a traveller.*/}
-                    {this.state.selector === 3 && <Add bookTraveller={this.bookTraveller}/>}
+                    {this.state.selector === 3 && <Add bookTraveller={this.bookTraveller} travellers={this.state.travellers}/>}
                     {/*Q5. Code to call the component that deletes a traveller based on a given attribute.*/}
                     {this.state.selector === 4 && <Delete deleteTraveller={this.deleteTraveller}/>}
                 </div>
